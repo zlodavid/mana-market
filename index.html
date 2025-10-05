@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mana-Market | Supermercado Virtual Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --azul-profundo: #0A2463;
+            --azul-medio: #1E56A0;
+            --azul-claro: #3A7CA5;
+            --azul-cielo: #6DB4E8;
+            --azul-muy-claro: #D6E9F5;
+            --acento-naranja: #FF6B35;
+            --verde-fresco: #06D6A0;
+            --gris-texto: #2C3E50;
+            --blanco: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gris-texto);
+            background: linear-gradient(135deg, #f0f7fb 0%, #e3f0f7 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(30deg, var(--azul-muy-claro) 12%, transparent 12.5%, transparent 87%, var(--azul-muy-claro) 87.5%, var(--azul-muy-claro)),
+                linear-gradient(150deg, var(--azul-muy-claro) 12%, transparent 12.5%, transparent 87%, var(--azul-muy-claro) 87.5%, var(--azul-muy-claro));
+            background-size: 80px 140px;
+            background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+            opacity: 0.3;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-fruits {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-fruit {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0;
+            filter: drop-shadow(0 0 10px rgba(30, 86, 160, 0.3));
+            animation: float 20s infinite;
+        }
+
+        .floating-fruit:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 18s; }
+        .floating-fruit:nth-child(2) { left: 25%; animation-delay: 2s; animation-duration: 22s; }
+        .floating-fruit:nth-child(3) { left: 40%; animation-delay: 4s; animation-duration: 20s; }
+        .floating-fruit:nth-child(4) { left: 55%; animation-delay: 6s; animation-duration: 19s; }
+        .floating-fruit:nth-child(5) { left: 70%; animation-delay: 8s; animation-duration: 21s; }
+        .floating-fruit:nth-child(6) { left: 85%; animation-delay: 10s; animation-duration: 23s; }
+        .floating-fruit:nth-child(7) { left: 15%; animation-delay: 12s; animation-duration: 24s; }
+        .floating-fruit:nth-child(8) { left: 35%; animation-delay: 14s; animation-duration: 19s; }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            5% {
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(50vh) rotate(180deg) scale(1.2);
+                opacity: 0.2;
+            }
+            95% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        header {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .nav-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 100px;
+            padding: 1rem 2rem;
+            box-shadow: 0 20px 60px rgba(10, 36, 99, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(30, 86, 160, 0.1), transparent);
+            animation: navShine 3s infinite;
+        }
+
+        @keyframes navShine {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-orbit {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-center {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--azul-profundo), var(--azul-medio));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 5px 20px rgba(10, 36, 99, 0.3);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(180deg); }
+        }
+
+        .logo-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--verde-fresco);
+            border-radius: 50%;
+            animation: orbit 4s linear infinite;
+            box-shadow: 0 0 10px var(--verde-fresco);
+        }
+
+        .logo-particle:nth-child(1) { animation-delay: 0s; }
+        .logo-particle:nth-child(2) { animation-delay: 1s; }
+        .logo-particle:nth-child(3) { animation-delay: 2s; }
+        .logo-particle:nth-child(4) { animation-delay: 3s; }
+
+        @keyframes orbit {
+            0% {
+                transform: rotate(0deg) translateX(25px) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: rotate(360deg) translateX(25px) rotate(-360deg);
+                opacity: 1;
+            }
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--azul-profundo), var(--azul-medio), var(--verde-fresco));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            position: relative;
+            z-index: 2;
+            background: rgba(10, 36, 99, 0.05);
+            padding: 0.5rem;
+            border-radius: 50px;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            height: 100%;
+            background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 5px 15px rgba(30, 86, 160, 0.3);
+            z-index: 0;
+        }
+
+        .nav-links a {
+            color: var(--azul-profundo);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            display: block;
+            position: relative;
+            z-index: 1;
+            font-size: 0.95rem;
+        }
+
+        .nav-links li.active a {
+            color: var(--blanco);
+        }
+
+        .nav-links a:hover {
+            color: var(--azul-medio);
+            transform: translateY(-2px);
+        }
+
+        .nav-links li.active a:hover {
+            color: var(--blanco);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-sphere {
+            position: relative;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+        }
+
+        .search-input {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50px;
+            padding: 0 50px 0 20px;
+            background: linear-gradient(135deg, var(--azul-muy-claro), rgba(255, 255, 255, 0.9));
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input:focus {
+            width: 250px;
+            box-shadow: 0 5px 20px rgba(58, 122, 165, 0.3);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 45px;
+            height: 45px;
+            border: none;
+            background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+            border-radius: 50%;
+            color: var(--blanco);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(30, 86, 160, 0.3);
+        }
+
+        .search-btn:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .cart-orb {
+            position: relative;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--acento-naranja), #ff8c5a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+            animation: cartPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes cartPulse {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(255, 107, 53, 0.6), 0 0 20px rgba(255, 107, 53, 0.3);
+            }
+        }
+
+        .cart-orb:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .cart-orb::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            filter: blur(10px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .cart-icon {
+            font-size: 1.3rem;
+            color: var(--blanco);
+        }
+
+        .cart-count-orb {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--azul-profundo);
+            color: var(--blanco);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 2px solid var(--blanco);
+            animation: countBounce 0.5s ease-in-out;
+        }
+
+        @keyframes countBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .content-wrapper {
+            padding-top: 140px;
+        }
+
+        .page {
+            display: none;
+            padding: 3rem 0;
+        }
+
+        .page.active {
+            display: block;
+            animation: pageSlide 0.6s ease-out;
+        }
+
+        @keyframes pageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, var(--azul-profundo) 0%, var(--azul-medio) 100%);
+            border-radius: 30px;
+            overflow: hidden;
+            margin: 2rem 0 4rem;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 20px 60px rgba(10, 36, 99, 0.4);
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--azul-claro) 0%, transparent 70%);
+            opacity: 0.3;
+            animation: heroFloat 10s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 4rem;
+            max-width: 700px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--verde-fresco);
+            color: var(--azul-profundo);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--blanco);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--azul-muy-claro);
+            margin-bottom: 2rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--acento-naranja);
+            color: var(--blanco);
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .hero-cta:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6);
+        }
+
+        .section-wrapper {
+            position: relative;
+            padding-left: 30px;
+            margin: 5rem 0;
+        }
+
+        .section-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--azul-profundo), var(--azul-cielo));
+            border-radius: 10px;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            background: var(--azul-muy-claro);
+            color: var(--azul-profundo);
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--azul-profundo);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: var(--gris-texto);
+            max-width: 700px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--blanco);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(10, 36, 99, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            border: 2px solid transparent;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--azul-claro), var(--verde-fresco));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+            z-index: 10;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px) rotateX(5deg) scale(1.02);
+            box-shadow: 0 25px 60px rgba(10, 36, 99, 0.25);
+            border-color: var(--azul-cielo);
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card::after {
+            content: '✨';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 2rem;
+            opacity: 0;
+            transform: scale(0) rotate(-45deg);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 10;
+            filter: drop-shadow(0 0 10px rgba(252, 209, 22, 0.8));
+        }
+
+        .product-card:hover::after {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            animation: sparkle 1s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f5f9fc, #e8f3f9);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.15) rotate(3deg);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--acento-naranja);
+            color: var(--blanco);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+            animation: tada 2s infinite;
+        }
+
+        @keyframes tada {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            10%, 20% { transform: scale(0.95) rotate(-3deg); }
+            30%, 50%, 70%, 90% { transform: scale(1.05) rotate(3deg); }
+            40%, 60%, 80% { transform: scale(1.05) rotate(-3deg); }
+        }
+
+        .product-origin-badge {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(10, 36, 99, 0.9);
+            backdrop-filter: blur(10px);
+            color: var(--blanco);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-info {
+            padding: 1.8rem;
+        }
+
+        .product-category {
+            color: var(--azul-claro);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--azul-profundo);
+            margin-bottom: 0.8rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .product-description {
+            color: var(--gris-texto);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+
+        .product-nutrition {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            padding: 1rem;
+            background: var(--azul-muy-claro);
+            border-radius: 15px;
+        }
+
+        .nutrition-item {
+            text-align: center;
+        }
+
+        .nutrition-value {
+            display: block;
+            font-weight: 700;
+            color: var(--azul-medio);
+            font-size: 1.1rem;
+        }
+
+        .nutrition-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gris-texto);
+            margin-top: 0.2rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--verde-fresco);
+        }
+
+        .product-price-old {
+            display: block;
+            font-size: 1rem;
+            color: #999;
+            text-decoration: line-through;
+            font-weight: 400;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--azul-muy-claro);
+            padding: 0.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-selector input {
+            width: 70px;
+            padding: 0.5rem;
+            border: 2px solid var(--azul-claro);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .unit-toggle {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .unit-btn {
+            padding: 0.4rem 1rem;
+            border: 2px solid var(--azul-medio);
+            background: var(--blanco);
+            color: var(--azul-medio);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .unit-btn.active {
+            background: var(--azul-medio);
+            color: var(--blanco);
+        }
+
+        .add-to-cart-btn {
+            flex: 1;
+            background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+            color: var(--blanco);
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-to-cart-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .add-to-cart-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 86, 160, 0.4);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background: var(--blanco);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(10, 36, 99, 0.1);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--azul-muy-claro) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) rotateX(5deg);
+            box-shadow: 0 25px 60px rgba(10, 36, 99, 0.25);
+        }
+
+.feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: var(--azul-profundo);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            position: relative;
+            z-index: 1;
+            animation: hexagonFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes hexagonFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--azul-profundo);
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-description {
+            color: var(--gris-texto);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            right: -450px;
+            top: 0;
+            width: 450px;
+            height: 100vh;
+            background: var(--blanco);
+            box-shadow: -10px 0 50px rgba(10, 36, 99, 0.3);
+            transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            background: linear-gradient(135deg, var(--azul-profundo), var(--azul-medio));
+            color: var(--blanco);
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .close-cart {
+            background: var(--acento-naranja);
+            border: none;
+            color: var(--blanco);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-cart:hover {
+            transform: rotate(90deg);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--azul-muy-claro);
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .cart-item:hover {
+            transform: translateX(-5px);
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 700;
+            color: var(--azul-profundo);
+            margin-bottom: 0.3rem;
+        }
+
+        .cart-item-quantity {
+            color: var(--gris-texto);
+            font-size: 0.9rem;
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--verde-fresco);
+            margin-top: 0.3rem;
+        }
+
+        .remove-item {
+            background: var(--acento-naranja);
+            color: var(--blanco);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .remove-item:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-nutrition-summary {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #e8f8f5, #fff5e6);
+            border-top: 2px solid var(--azul-muy-claro);
+        }
+
+        .cart-nutrition-summary h3 {
+            color: var(--azul-profundo);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .cart-nutrition-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .cart-nutrition-stat {
+            background: var(--blanco);
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .cart-nutrition-stat strong {
+            display: block;
+            color: var(--verde-fresco);
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .cart-nutrition-stat span {
+            font-size: 0.85rem;
+            color: var(--gris-texto);
+        }
+
+        .cart-total {
+            padding: 2rem;
+            border-top: 2px solid var(--azul-muy-claro);
+            background: var(--azul-muy-claro);
+        }
+
+        .cart-total-label {
+            color: var(--gris-texto);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-total-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--verde-fresco);
+        }
+
+        .checkout-button {
+            width: calc(100% - 4rem);
+            margin: 0 2rem 2rem;
+            background: var(--acento-naranja);
+            color: var(--blanco);
+            border: none;
+            padding: 1.3rem;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .checkout-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--azul-profundo);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--azul-muy-claro);
+            border-radius: 12px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--azul-medio);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+            color: var(--blanco);
+            border: none;
+            padding: 1.2rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(30, 86, 160, 0.4);
+        }
+
+        .contact-info {
+            background: var(--blanco);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(10, 36, 99, 0.1);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.2rem;
+            background: var(--azul-muy-claro);
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+            color: var(--blanco);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .contact-details h4 {
+            color: var(--azul-profundo);
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-details p {
+            color: var(--gris-texto);
+        }
+
+        .notification {
+            position: fixed;
+            top: 120px;
+            right: -400px;
+            background: linear-gradient(135deg, var(--verde-fresco), #05b589);
+            color: var(--blanco);
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(6, 214, 160, 0.4);
+            z-index: 3000;
+            transition: right 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification.show {
+            right: 20px;
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--azul-profundo), var(--azul-medio));
+            color: var(--blanco);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 6rem;
+            clip-path: polygon(0 20px, 100% 0, 100% 100%, 0 100%);
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                width: 95%;
+                top: 20px;
+            }
+
+            .nav-container {
+                padding: 0.8rem 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .search-input:focus {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-fruits">
+        <div class="floating-fruit">🍎</div>
+        <div class="floating-fruit">🥕</div>
+        <div class="floating-fruit">🍊</div>
+        <div class="floating-fruit">🥬</div>
+        <div class="floating-fruit">🍌</div>
+        <div class="floating-fruit">🥑</div>
+        <div class="floating-fruit">🍇</div>
+        <div class="floating-fruit">🥝</div>
+    </div>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo-section">
+                <div class="logo-orbit">
+                    <div class="logo-particle"></div>
+                    <div class="logo-particle"></div>
+                    <div class="logo-particle"></div>
+                    <div class="logo-particle"></div>
+                    <div class="logo-center">🥬</div>
+                </div>
+                <div class="logo-text" onclick="showPage('inicio')">Mana Market</div>
+            </div>
+            
+            <ul class="nav-links" id="navLinks">
+                <div class="nav-indicator" id="navIndicator"></div>
+                <li class="active" data-page="inicio"><a onclick="navigateTo(event, 'inicio')">Inicio</a></li>
+                <li data-page="productos"><a onclick="navigateTo(event, 'productos')">Productos</a></li>
+                <li data-page="ofertas"><a onclick="navigateTo(event, 'ofertas')">Ofertas</a></li>
+                <li data-page="contacto"><a onclick="navigateTo(event, 'contacto')">Contacto</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <div class="search-sphere">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Buscar..." oninput="buscarProductos(this.value)">
+                    <button class="search-btn">🔍</button>
+                </div>
+                
+                <div class="cart-orb" onclick="toggleCart()">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-count-orb" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="content-wrapper">
+        <div id="inicio" class="page active">
+            <div class="container">
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <span class="hero-badge">Del Campo Boyacense</span>
+                        <h1 class="hero-title">Supermercado Virtual Premium</h1>
+                        <p class="hero-subtitle">Conectamos agricultores locales con tu mesa. Productos frescos, origen garantizado y entrega en 24 horas.</p>
+                        <button class="hero-cta" onclick="showPage('productos')">
+                            Ver Catálogo
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="section-wrapper">
+                    <div class="section-header">
+                        <span class="section-label">Beneficios</span>
+                        <h2 class="section-title">¿Por Qué Mana-Market?</h2>
+                        <p class="section-description">Somos más que un supermercado: somos tu conexión directa con el campo colombiano</p>
+                    </div>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🚜</div>
+                            <h3 class="feature-title">Directo del Campo</h3>
+                            <p class="feature-description">Trabajamos con más de 200 agricultores de Boyacá. Sin intermediarios, precios justos para todos.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3 class="feature-title">Info Nutricional</h3>
+                            <p class="feature-description">Calorías, vitaminas y beneficios de cada producto. Compra con conocimiento.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🚚</div>
+                            <h3 class="feature-title">Entrega 24h</h3>
+                            <p class="feature-description">Recibe tus productos frescos en menos de 24 horas. Cobertura en 25+ ciudades.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">♻️</div>
+                            <h3 class="feature-title">100% Sostenible</h3>
+                            <p class="feature-description">Empaques biodegradables y prácticas ecológicas. Cuidamos el planeta.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">⭐</div>
+                            <h3 class="feature-title">Calidad Premium</h3>
+                            <p class="feature-description">Calificación 4.9/5 por más de 15,000 clientes satisfechos.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">👨‍🌾</div>
+                            <h3 class="feature-title">Origen Garantizado</h3>
+                            <p class="feature-description">Conoce al agricultor de cada producto. Transparencia total.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="productos" class="page">
+            <div class="container">
+                <div class="section-wrapper">
+                    <div class="section-header">
+                        <span class="section-label">Catálogo</span>
+                        <h2 class="section-title">Nuestros Productos</h2>
+                        <p class="section-description">Selección premium de frutas y verduras con información nutricional completa</p>
+                    </div>
+
+                    <div id="resultadosBusqueda" style="display: none; margin-bottom: 3rem;">
+                        <div style="background: var(--blanco); padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(10, 36, 99, 0.1); margin-bottom: 2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <span class="section-label">Resultados</span>
+                                    <p id="contadorResultados" style="margin-top: 1rem; color: var(--gris-texto); font-size: 1.1rem;"></p>
+                                </div>
+                                <button onclick="limpiarBusqueda()" style="background: var(--acento-naranja); color: var(--blanco); border: none; 
+                                        padding: 0.8rem 1.5rem; border-radius: 12px; cursor: pointer; font-weight: 700;">
+                                    Limpiar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="products-grid" id="productosEncontrados"></div>
+                    </div>
+
+                    <div id="categoriasProductos">
+                        <div style="margin-bottom: 4rem;">
+                            <h3 style="font-size: 1.8rem; color: var(--azul-medio); margin-bottom: 2rem; font-weight: 700; text-transform: uppercase;">Frutas Tropicales</h3>
+                            <div class="products-grid" id="frutasTropicales"></div>
+                        </div>
+
+                        <div style="margin-bottom: 4rem;">
+                            <h3 style="font-size: 1.8rem; color: var(--azul-medio); margin-bottom: 2rem; font-weight: 700; text-transform: uppercase;">Frutas Cítricas</h3>
+                            <div class="products-grid" id="frutasCitricas"></div>
+                        </div>
+
+                        <div style="margin-bottom: 4rem;">
+                            <h3 style="font-size: 1.8rem; color: var(--azul-medio); margin-bottom: 2rem; font-weight: 700; text-transform: uppercase;">Verduras de Hoja</h3>
+                            <div class="products-grid" id="verdurasHoja"></div>
+                        </div>
+
+                        <div style="margin-bottom: 4rem;">
+                            <h3 style="font-size: 1.8rem; color: var(--azul-medio); margin-bottom: 2rem; font-weight: 700; text-transform: uppercase;">Tubérculos y Raíces</h3>
+                            <div class="products-grid" id="tuberculos"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ofertas" class="page">
+            <div class="container">
+                <div class="section-wrapper">
+                    <div class="section-header">
+                        <span class="section-label">Promociones</span>
+                        <h2 class="section-title">Ofertas Especiales</h2>
+                        <p class="section-description">Aprovecha nuestras promociones y ahorra comprando saludable</p>
+                    </div>
+
+                    <div style="margin-bottom: 4rem;">
+                        <h3 style="font-size: 1.8rem; color: var(--azul-medio); margin-bottom: 2rem; font-weight: 700; text-transform: uppercase;">Ofertas del Día</h3>
+                        <div class="products-grid" id="ofertasDia"></div>
+                    </div>
+
+                    <div style="margin-bottom: 4rem;">
+                        <h3 style="font-size: 1.8rem; color: var(--azul-medio); margin-bottom: 2rem; font-weight: 700; text-transform: uppercase;">Combos Familiares</h3>
+                        <div class="products-grid" id="combos"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contacto" class="page">
+            <div class="container">
+                <div class="section-wrapper">
+                    <div class="section-header">
+                        <span class="section-label">Contáctanos</span>
+                        <h2 class="section-title">Estamos Aquí Para Ayudarte</h2>
+                        <p class="section-description">Escríbenos y te responderemos en menos de 24 horas</p>
+                    </div>
+
+                    <div class="contact-grid">
+                        <form onsubmit="handleSubmit(event)" style="background: var(--blanco); padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(10, 36, 99, 0.1);">
+                            <div class="form-group">
+                                <label>Nombre Completo</label>
+                                <input type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="tel" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mensaje</label>
+                                <textarea rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Enviar Mensaje</button>
+                        </form>
+
+                        <div class="contact-info">
+                            <h3 style="margin-bottom: 2rem; color: var(--azul-profundo); font-size: 1.6rem; font-weight: 700;">Información de Contacto</h3>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">📍</div>
+                                <div class="contact-details">
+                                    <h4>Dirección</h4>
+                                    <p>Calle 123 #45-67, Duitama, Boyacá</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📞</div>
+                                <div class="contact-details">
+                                    <h4>Teléfono</h4>
+                                    <p>+57 310 123 4567</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">✉️</div>
+                                <div class="contact-details">
+                                    <h4>Email</h4>
+                                    <p>manamarket@gmail.com</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🕒</div>
+                                <div class="contact-details">
+                                    <h4>Horario</h4>
+                                    <p>Lun - Sáb: 8:00 AM - 8:00 PM<br>Dom: 9:00 AM - 5:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Mi Carrito</h2>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p style="text-align: center; color: #999; padding: 3rem;">Tu carrito está vacío</p>
+        </div>
+        <div class="cart-nutrition-summary" id="cartNutritionSummary" style="display: none;">
+            <h3>📊 Información Nutricional Total</h3>
+            <div class="cart-nutrition-grid" id="cartNutritionGrid"></div>
+        </div>
+        <div class="cart-total">
+            <div class="cart-total-label">Total</div>
+            <div class="cart-total-amount" id="cartTotal">$0</div>
+        </div>
+        <button class="checkout-button" onclick="checkout()">Finalizar Compra</button>
+    </div>
+
+    <div class="notification" id="notification">
+        <span class="notification-icon">✓</span>
+        <span id="notificationText"></span>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p style="font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem;">Mana-Market</p>
+            <p>Del campo colombiano directo a tu mesa</p>
+            <p>© 2025 Proyecto Académico - Universidad</p>
+        </div>
+    </footer>
+
+    <script>
+        const productos = {
+            frutasTropicales: [
+                {id: 1, nombre: 'Mango Tommy', categoria: 'Frutas Tropicales', descripcion: 'Mangos colombianos dulces y jugosos, perfectos para jugos naturales y postres caseros', precio: 3500, imagen: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=400', unidad: 'kg', origen: 'Tolima', productor: 'Don Roberto Gómez', calorias: 60, vitaminas: 'A, C, E'},
+                {id: 2, nombre: 'Piña Golden', categoria: 'Frutas Tropicales', descripcion: 'Piña madura y aromática, ideal para toda la familia. Rica en bromelina', precio: 4200, imagen: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=400', unidad: 'kg', origen: 'Valle del Cauca', productor: 'Cooperativa El Piñal', calorias: 50, vitaminas: 'C, B6'},
+                {id: 3, nombre: 'Papaya Hawaiana', categoria: 'Frutas Tropicales', descripcion: 'Papaya dulce y suave, rica en vitaminas. Excelente para la digestión', precio: 3000, imagen: 'https://images.unsplash.com/photo-1617112848923-cc2234396a8d?w=400', unidad: 'kg', origen: 'Santander', productor: 'Finca Los Arrayanes', calorias: 43, vitaminas: 'A, C'}
+            ],
+            frutasCitricas: [
+                {id: 4, nombre: 'Naranja Valencia', categoria: 'Frutas Cítricas', descripcion: 'Naranjas jugosas perfectas para jugo fresco matutino. Alto contenido de vitamina C', precio: 2500, imagen: 'https://images.unsplash.com/photo-1547514701-42782101795e?w=400', unidad: 'kg', origen: 'Meta', productor: 'Cítricos del Llano', calorias: 47, vitaminas: 'C, A'},
+                {id: 5, nombre: 'Limón Tahití', categoria: 'Frutas Cítricas', descripcion: 'Limones ácidos ideales para cocinar y bebidas refrescantes', precio: 2200, imagen: 'https://images.unsplash.com/photo-1590502593747-42a996133562?w=400', unidad: 'kg', origen: 'Caldas', productor: 'Don Carlos Martínez', calorias: 29, vitaminas: 'C'},
+                {id: 6, nombre: 'Mandarina', categoria: 'Frutas Cítricas', descripcion: 'Mandarinas dulces y fáciles de pelar. Snack perfecto para niños', precio: 3200, imagen: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=400', unidad: 'kg', origen: 'Risaralda', productor: 'Finca Mandarina Feliz', calorias: 53, vitaminas: 'C, A'}
+            ],
+          verdurasHoja: [
+                {id: 7, nombre: 'Lechuga Romana', categoria: 'Verduras', descripcion: 'Lechuga fresca y crujiente para ensaladas saludables. Recién cosechada', precio: 1800, imagen: 'https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=400', unidad: 'kg', origen: 'Boyacá', productor: 'Huerta Doña María', calorias: 17, vitaminas: 'K, A, C'},
+                {id: 8, nombre: 'Espinaca', categoria: 'Verduras', descripcion: 'Espinaca tierna rica en hierro y vitaminas. Perfecta para batidos verdes', precio: 2500, imagen: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400', unidad: 'kg', origen: 'Cundinamarca', productor: 'Agrícola San Pedro', calorias: 23, vitaminas: 'K, A, C'},
+                {id: 9, nombre: 'Acelga', categoria: 'Verduras', descripcion: 'Acelga fresca ideal para guisos y sopas nutritivas', precio: 2000, imagen: 'https://corva.com.ar/wp-content/uploads/2025/05/ACELGA.png', unidad: 'kg', origen: 'Boyacá', productor: 'Don Luis Rojas', calorias: 19, vitaminas: 'K, A, C'}
+            ],
+            tuberculos: [
+                {id: 10, nombre: 'Papa Criolla', categoria: 'Tubérculos', descripcion: 'Papa criolla colombiana de excelente calidad. Ideal para freír', precio: 3500, imagen: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400', unidad: 'kg', origen: 'Boyacá', productor: 'Cooperativa Papera', calorias: 77, vitaminas: 'C, B6'},
+                {id: 11, nombre: 'Yuca', categoria: 'Tubérculos', descripcion: 'Yuca fresca perfecta para freír o sancochar. Carbohidrato saludable', precio: 2800, imagen: 'https://megaredil.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NDMzOCwicHVyIjoiYmxvYl9pZCJ9fQ==--cc8b147e9e63466948da0ea9ce0a1097dd630f40/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJqcGciLCJyZXNpemVfdG9fZml0IjpbNjAwLDYwMF19LCJwdXIiOiJ2YXJpYXRpb24ifX0=--121ebfcd4293f99df590ac1a60ec2d53d6f75b42/229.jpg?locale=es', unidad: 'kg', origen: 'Cauca', productor: 'Finca Yucal', calorias: 160, vitaminas: 'C'},
+                {id: 12, nombre: 'Zanahoria', categoria: 'Tubérculos', descripcion: 'Zanahorias frescas ricas en vitamina A. Perfectas para la vista', precio: 2200, imagen: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400', unidad: 'kg', origen: 'Boyacá', productor: 'Huerta El Zana', calorias: 41, vitaminas: 'A, K, C'}
+            ],
+            ofertasDia: [
+                {id: 13, nombre: 'Banano Premium', categoria: 'Ofertas', descripcion: 'Bananos maduros en oferta especial. Alto en potasio', precio: 1500, precioOriginal: 2500, imagen: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400', unidad: 'kg', origen: 'Urabá', productor: 'Bananeros Unidos', calorias: 89, vitaminas: 'B6, C'},
+                {id: 14, nombre: 'Tomate Chonto', categoria: 'Ofertas', descripcion: 'Tomates frescos y jugosos en promoción. Perfectos para salsas', precio: 2000, precioOriginal: 3000, imagen: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400', unidad: 'kg', origen: 'Norte de Santander', productor: 'Tomates del Norte', calorias: 18, vitaminas: 'C, K'},
+                {id: 15, nombre: 'Aguacate Hass', categoria: 'Ofertas', descripcion: 'Aguacates en su punto perfecto de maduración. Grasas saludables', precio: 4500, precioOriginal: 6000, imagen: 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400', unidad: 'kg', origen: 'Antioquia', productor: 'Aguacates Premium', calorias: 160, vitaminas: 'K, E, C'}
+            ],
+            combos: [
+                {id: 16, nombre: 'Combo Ensaladas', categoria: 'Combos', descripcion: 'Lechuga + Tomate + Zanahoria + Pepino + Aguacate', precio: 8000, precioOriginal: 10000, imagen: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400', unidad: 'combo', origen: 'Variado', productor: 'Selección Mana-Market', calorias: 150, vitaminas: 'A, C, K, E'},
+                {id: 17, nombre: 'Combo Jugos', categoria: 'Combos', descripcion: 'Naranja + Mango + Piña + Fresa para jugos toda la semana', precio: 12000, precioOriginal: 15000, imagen: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400', unidad: 'combo', origen: 'Variado', productor: 'Selección Mana-Market', calorias: 180, vitaminas: 'C, A, B6'},
+                {id: 18, nombre: 'Combo Familiar', categoria: 'Combos', descripcion: 'Variedad de frutas y verduras para toda la semana. 10+ productos', precio: 25000, precioOriginal: 32000, imagen: 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=400', unidad: 'combo', origen: 'Variado', productor: 'Selección Mana-Market', calorias: 500, vitaminas: 'Todas'}
+            ]
+        };
+
+        let carrito = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarProductos();
+            actualizarCarrito();
+            updateNavIndicator();
+        });
+
+        function navigateTo(event, pageName) {
+            event.preventDefault();
+            showPage(pageName);
+            
+            const navItems = document.querySelectorAll('.nav-links li');
+            navItems.forEach(item => item.classList.remove('active'));
+            event.currentTarget.parentElement.classList.add('active');
+            
+            updateNavIndicator();
+        }
+
+        function updateNavIndicator() {
+            const activeItem = document.querySelector('.nav-links li.active');
+            const indicator = document.getElementById('navIndicator');
+            
+            if (activeItem && indicator) {
+                const rect = activeItem.getBoundingClientRect();
+                const parentRect = activeItem.parentElement.getBoundingClientRect();
+                
+                indicator.style.width = rect.width + 'px';
+                indicator.style.left = (rect.left - parentRect.left) + 'px';
+            }
+        }
+
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageName).classList.add('active');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            
+            const navItems = document.querySelectorAll('.nav-links li');
+            navItems.forEach(item => {
+                if (item.getAttribute('data-page') === pageName) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            updateNavIndicator();
+        }
+
+        function renderizarProductos() {
+            Object.keys(productos).forEach(categoria => {
+                const contenedor = document.getElementById(categoria);
+                if (contenedor) {
+                    contenedor.innerHTML = productos[categoria].map(p => crearTarjetaProducto(p)).join('');
+                }
+            });
+        }
+
+        function crearTarjetaProducto(p) {
+            const descuento = p.precioOriginal ? `<div class="product-badge">-${Math.round((1 - p.precio / p.precioOriginal) * 100)}% OFF</div>` : '';
+            const precioViejo = p.precioOriginal ? `<span class="product-price-old">$${p.precioOriginal.toLocaleString()}</span>` : '';
+            
+            return `
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        <img src="${p.imagen}" alt="${p.nombre}" class="product-image">
+                        ${descuento}
+                        <div class="product-origin-badge">${p.origen}</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${p.categoria}</div>
+                        <div class="product-name">${p.nombre}</div>
+                        <div class="product-description">${p.descripcion}</div>
+                        <div class="product-nutrition">
+                            <div class="nutrition-item">
+                                <span class="nutrition-value">${p.calorias}</span>
+                                <span class="nutrition-label">kcal</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-value">${p.vitaminas.split(',').length}</span>
+                                <span class="nutrition-label">vitaminas</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-value">⭐⭐⭐⭐⭐</span>
+                                <span class="nutrition-label">calidad</span>
+                            </div>
+                        </div>
+                        ${p.unidad !== 'combo' ? `
+                            <div class="quantity-selector">
+                                <input type="number" id="weight-${p.id}" min="0.5" step="0.5" value="1">
+                                <div class="unit-toggle">
+                                    <button class="unit-btn active" onclick="cambiarUnidad(${p.id}, 'kg')">KG</button>
+                                    <button class="unit-btn" onclick="cambiarUnidad(${p.id}, 'lb')">LB</button>
+                                </div>
+                            </div>
+                        ` : ''}
+                        <div class="product-footer">
+                            <div>
+                                ${precioViejo}
+                                <div class="product-price" id="precio-${p.id}">$${p.precio.toLocaleString()}</div>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="agregarAlCarrito(${p.id}, '${p.unidad}')">
+                                Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function cambiarUnidad(productoId, unidad) {
+            const weightInput = document.getElementById(`weight-${productoId}`);
+            const productCard = weightInput.closest('.product-card');
+            const precioElement = document.getElementById(`precio-${productoId}`);
+            const botones = productCard.querySelectorAll('.unit-btn');
+            
+            botones.forEach(btn => btn.classList.remove('active'));
+            const botonActivo = Array.from(botones).find(btn => btn.textContent.trim() === unidad.toUpperCase());
+            if (botonActivo) botonActivo.classList.add('active');
+            
+            let producto = null;
+            for (let categoria in productos) {
+                producto = productos[categoria].find(p => p.id === productoId);
+                if (producto) break;
+            }
+            
+            if (producto) {
+                producto.unidadActual = unidad;
+                let precioMostrar = producto.precio;
+                
+                if (unidad === 'lb') {
+                    precioMostrar = Math.round(producto.precio / 2);
+                }
+                
+                precioElement.textContent = `$${precioMostrar.toLocaleString()}`;
+            }
+        }
+
+        function agregarAlCarrito(productoId, tipoUnidad) {
+            let producto = null;
+            for (let categoria in productos) {
+                producto = productos[categoria].find(p => p.id === productoId);
+                if (producto) break;
+            }
+
+            if (!producto) return;
+
+            let cantidad = 1;
+            let unidad = producto.unidadActual || producto.unidad || 'kg';
+
+            if (tipoUnidad !== 'combo') {
+                const inputPeso = document.getElementById(`weight-${productoId}`);
+                cantidad = parseFloat(inputPeso.value) || 1;
+            }
+            
+            let precioUnitario = producto.precio;
+            if (unidad === 'lb') {
+                precioUnitario = Math.round(producto.precio / 2);
+            }
+
+            const itemCarrito = {
+                ...producto,
+                cantidad,
+                unidad,
+                precioUnitario: precioUnitario,
+                subtotal: precioUnitario * cantidad
+            };
+
+            const indiceExistente = carrito.findIndex(item => 
+                item.id === productoId && item.unidad === unidad
+            );
+
+            if (indiceExistente > -1) {
+                carrito[indiceExistente].cantidad += cantidad;
+                carrito[indiceExistente].subtotal = carrito[indiceExistente].precioUnitario * carrito[indiceExistente].cantidad;
+            } else {
+                carrito.push(itemCarrito);
+            }
+
+            actualizarCarrito();
+            mostrarNotificacion(`${cantidad} ${unidad} de ${producto.nombre} agregado al carrito`);
+        }
+
+        function actualizarCarrito() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartNutritionSummary = document.getElementById('cartNutritionSummary');
+            const cartNutritionGrid = document.getElementById('cartNutritionGrid');
+
+            const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            cartCount.textContent = totalItems;
+
+            if (carrito.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: #999; padding: 3rem;">Tu carrito está vacío</p>';
+                cartNutritionSummary.style.display = 'none';
+            } else {
+                cartItems.innerHTML = carrito.map((item, index) => `
+                    <div class="cart-item">
+                        <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-image">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.nombre}</div>
+                            <div class="cart-item-quantity">${item.cantidad} ${item.unidad} × $${Math.round(item.precioUnitario).toLocaleString()}</div>
+                            <div class="cart-item-price">$${Math.round(item.subtotal).toLocaleString()}</div>
+                        </div>
+                        <button class="remove-item" onclick="eliminarDelCarrito(${index})">×</button>
+                    </div>
+                `).join('');
+
+                const totalCalorias = carrito.reduce((sum, item) => sum + (item.calorias * item.cantidad), 0);
+                const productosUnicos = carrito.length;
+                
+                cartNutritionSummary.style.display = 'block';
+                cartNutritionGrid.innerHTML = `
+                    <div class="cart-nutrition-stat">
+                        <strong>${Math.round(totalCalorias)}</strong>
+                        <span>Calorías Totales</span>
+                    </div>
+                    <div class="cart-nutrition-stat">
+                        <strong>${productosUnicos}</strong>
+                        <span>Tipos de Productos</span>
+                    </div>
+                    <div class="cart-nutrition-stat">
+                        <strong>${Math.round(totalItems)}</strong>
+                        <span>Items Totales</span>
+                    </div>
+                    <div class="cart-nutrition-stat">
+                        <strong>Alta</strong>
+                        <span>Calidad Nutricional</span>
+                    </div>
+                `;
+            }
+
+            const total = carrito.reduce((sum, item) => sum + item.subtotal, 0);
+            cartTotal.textContent = `$${Math.round(total).toLocaleString()}`;
+        }
+
+        function eliminarDelCarrito(index) {
+            const item = carrito[index];
+            carrito.splice(index, 1);
+            actualizarCarrito();
+            mostrarNotificacion(`${item.nombre} eliminado del carrito`);
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+        }
+
+        function checkout() {
+            if (carrito.length === 0) {
+                mostrarNotificacion('Tu carrito está vacío');
+                return;
+            }
+
+            const total = carrito.reduce((sum, item) => sum + item.subtotal, 0);
+            const mensaje = `¡Gracias por tu compra en Mana-Market!\n\nResumen:\n${carrito.map(item => 
+                `- ${item.nombre}: ${item.cantidad} ${item.unidad} = $${Math.round(item.subtotal).toLocaleString()}`
+            ).join('\n')}\n\nTotal: $${Math.round(total).toLocaleString()}\n\nTe contactaremos pronto para coordinar la entrega.`;
+            
+            alert(mensaje);
+            carrito = [];
+            actualizarCarrito();
+            toggleCart();
+        }
+
+        function mostrarNotificacion(mensaje) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            notificationText.textContent = mensaje;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            mostrarNotificacion('Mensaje enviado con éxito. Te contactaremos pronto');
+            event.target.reset();
+        }
+
+        function buscarProductos(termino) {
+            termino = termino.toLowerCase().trim();
+            
+            if (termino.length === 0) {
+                limpiarBusqueda();
+                return;
+            }
+
+            const paginaActual = document.querySelector('.page.active').id;
+            if (paginaActual === 'inicio' || paginaActual === 'contacto') {
+                showPage('productos');
+            }
+
+            let resultados = [];
+            Object.keys(productos).forEach(categoria => {
+                const encontrados = productos[categoria].filter(producto => 
+                    producto.nombre.toLowerCase().includes(termino) ||
+                    producto.descripcion.toLowerCase().includes(termino) ||
+                    producto.origen.toLowerCase().includes(termino)
+                );
+                resultados = resultados.concat(encontrados);
+            });
+
+            const resultadosDiv = document.getElementById('resultadosBusqueda');
+            const categoriasDiv = document.getElementById('categoriasProductos');
+            const productosEncontrados = document.getElementById('productosEncontrados');
+            const contadorResultados = document.getElementById('contadorResultados');
+
+            if (resultados.length > 0) {
+                resultadosDiv.style.display = 'block';
+                categoriasDiv.style.display = 'none';
+                contadorResultados.textContent = `Se encontraron ${resultados.length} producto(s) para "${termino}"`;
+                productosEncontrados.innerHTML = resultados.map(producto => crearTarjetaProducto(producto)).join('');
+            } else {
+                resultadosDiv.style.display = 'block';
+                categoriasDiv.style.display = 'none';
+                contadorResultados.textContent = `No se encontraron productos para "${termino}"`;
+                productosEncontrados.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: #999;">
+                        <p style="font-size: 3rem; margin-bottom: 1rem;">🔍</p>
+                        <p style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--azul-profundo);">No encontramos productos con ese nombre</p>
+                        <p style="font-size: 1.1rem;">Intenta con otro término de búsqueda</p>
+                    </div>
+                `;
+            }
+        }
+
+        function limpiarBusqueda() {
+            document.getElementById('searchInput').value = '';
+            const resultadosDiv = document.getElementById('resultadosBusqueda');
+            const categoriasDiv = document.getElementById('categoriasProductos');
+            if (resultadosDiv) {
+                resultadosDiv.style.display = 'none';
+                categoriasDiv.style.display = 'block';
+            }
+        }
+
+        window.addEventListener('resize', updateNavIndicator);
+    </script>
+</body>
+</html>
